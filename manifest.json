@@ -14,9 +14,9 @@
     ],
     "background": {
         "scripts": [
-            "js/jquery-1.10.2.min.js",
-            "js/underscore-min.js",
-            "js/purl.js",
+            "js/lib/jquery-1.10.2.min.js",
+            "js/lib/underscore-min.js",
+            "js/lib/purl.js",
             "js/stat.js",
             "js/dao.js"
         ],
