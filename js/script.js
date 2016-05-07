@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    dao.getAllSiteData(function(data) {
-        data = data.site_info;
-        var detailArray = toArray(data.details);
-        generateData(detailArray, data.totalTimes);
+    dao.getAll(function(data) {
+        generateData(data);
     });
 }, true);
 
@@ -15,21 +13,20 @@ function toArray(data) {
     });
 }
 
-function generateData(data, totalTimes) {
+function generateData(data) {
     var first = 10;
     var last = data.length - first;
     last = last > 0 ? last : 0;
 
-    data = _.sortBy(data, 'times');
 
-    var mainData = _.last(data, first);
-    var otherData = _.first(data, last);
+    var mainData = _.first(data, first);
+    var otherData = _.last(data, last);
     var otherDataSum = 0;
     _.each(otherData, function(item) {
         otherDataSum += item.times;
     });
     var chartData = _.map(mainData, function(item) {
-        return [item.name, item.times];
+        return [item.hostname, item.times];
     });
     if (otherDataSum > 0) {
         chartData.push(['其它', otherDataSum]);

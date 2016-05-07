@@ -1,29 +1,40 @@
 var dao = dao || (function() {
-    function initRepo(callback) {
-        chrome.storage.sync.get('site_info', function(res) {
-            if (res['site_info']) {
+    var db = openDatabase('veddb', '1.0', '网站访问记录数据库', 2 * 1024 * 1024);
+
+    function initDB(callback) {
+        db.transaction(function(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS record(hostname,visittime)', [], function() {
                 return callback();
-            } else {
-                chrome.storage.sync.set({
-                    'site_info': {
-                        totalTimes: 0,
-                        details: {}
-                    }
-                }, function() {
-                    return callback();
-                });
-            }
+            }, function() {
+                return callback();
+            });
         });
     }
 
-    function getAllSiteData(callback) {
-        chrome.storage.sync.get('site_info', function(res) {
-            return callback(res);
+    function add(hostname) {
+        db.transaction(function(tx) {
+            tx.executeSql('INSERT INTO record(hostname, visittime)' +
+                ' VALUES(?,?)', [hostname, Math.floor(Date.now() / 1000)]);
+        });
+    }
+
+    function getAll(callback) {
+        db.transaction(function(tx) {
+            tx.executeSql('SELECT hostname, COUNT(hostname) AS times ' +
+                'FROM record GROUP BY hostname ' +
+                'ORDER BY times DESC', [],
+                function(tx, result) {
+                    return callback(result.rows);
+                },
+                function(tx, error) {
+                    console.log(error);
+                });
         });
     }
 
     return {
-        initRepo: initRepo,
-        getAllSiteData: getAllSiteData
+        initDB: initDB,
+        add: add,
+        getAll: getAll,
     };
 })();
