@@ -48,6 +48,9 @@ function drawChart(data) {
         title: {
             text: '网站访问分布统计数据'
         },
+        credits: {
+            enabled: false
+        },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
