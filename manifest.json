@@ -1,0 +1,25 @@
+{
+    "name": "访问统计",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "记录你访问了哪些页面",
+    "browser_action": {
+        "default_icon": "imgs/icon.png",
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage"
+    ],
+    "background": {
+        "scripts": [
+            "js/jquery-1.10.2.min.js",
+            "js/underscore-min.js",
+            "js/purl.js",
+            "js/stat.js",
+            "js/dao.js"
+        ],
+        "persistent": true
+    }
+}
