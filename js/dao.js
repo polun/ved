@@ -18,11 +18,15 @@ var dao = dao || (function() {
         });
     }
 
-    function getAll(callback) {
+    function getAll(startDate, endDate, callback) {
+        startDate = startDate ? startDate : 0;
+        endDate = endDate ? endDate : Math.floor(Date.now() / 1000);
         db.transaction(function(tx) {
             tx.executeSql('SELECT hostname, COUNT(hostname) AS times ' +
-                'FROM record GROUP BY hostname ' +
-                'ORDER BY times DESC', [],
+                'FROM record ' +
+                'WHERE visittime BETWEEN ? AND ?' +
+                'GROUP BY hostname ' +
+                'ORDER BY times DESC', [startDate, endDate],
                 function(tx, result) {
                     return callback(result.rows);
                 },

@@ -6,13 +6,22 @@
     <title>我看过</title>
     <style type="text/css">
     body {
-        min-width: 357px;
+        min-width: 388px;
         overflow-x: hidden;
+    }
+
+    #dateRange {
+        margin-bottom:10px;
     }
     </style>
 </head>
 
 <body>
+    <div id="dateRange">
+        <input id="startDate" type="date"></input>
+        <input id="endDate" type="date"></input>
+        <button id="btnConfirm">确定</button>
+    </div>
     <div>
         <div id="container"></div>
         <span id="info"></span>

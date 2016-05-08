@@ -1,8 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
-    dao.getAll(function(data) {
+    var nowDate = (new Date).toLocaleDateString();
+    var unixEpoch = Math.floor((new Date(nowDate)).getTime() / 1000);
+    initDateRange();
+    $('#btnConfirm').click(selectDate).trigger('click');
+}, true);
+
+function selectDate() {
+    var startDate = Date.parse($('#startDate').val()) / 1000;
+    var endDate = Date.parse($('#endDate').val()) / 1000 + 25 * 60 * 60;
+
+    // console.log(startDate, endDate);
+    dao.getAll(startDate, endDate, function(data) {
         generateData(data);
     });
-}, true);
+}
+
+function initDateRange() {
+    var date = new Date().toISOString().substring(0, 10);
+    $('#startDate').val(date);
+    $('#endDate').val(date);
+}
 
 function toArray(data) {
     return _.map(data, function(item, key) {
@@ -31,7 +48,6 @@ function generateData(data) {
     if (otherDataSum > 0) {
         chartData.push(['其它', otherDataSum]);
     }
-    console.log(data);
     drawChart(chartData);
 }
 
